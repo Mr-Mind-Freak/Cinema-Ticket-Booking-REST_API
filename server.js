@@ -2,21 +2,27 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const databaseCon = require('./config/databaseCon');
-const { logEvent } = require('./EventHandler/logEvent');
-const errEvent = require('./EventHandler/errEvent');
+const { logEvent } = require('./middleware/logEvent');
+const errEvent = require('./middleware/errEvent');
+const corsOptions = require('./config/corsOptions');
+const credentials = require('./middleware/credentials');
 
 const app = express();
 const PORT = process.env.PORT || 3500;
 databaseCon();
 
 app.use(logEvent);
-app.use(express.urlencoded({extended:true}));
+app.use(credentials);
+app.use(cors(corsOptions));
+app.use(express.urlencoded({extended:false}));
 app.use(express.json());
-app.use('/',(req,res)=>{
-    res.sendFile(path.join(__dirname,'views','index.html'));
-});
+app.use(cookieParser());
+app.use('/', require('./routes/root'));
+app.use('/register',require('./routes/register'));
 app.all('*',(req, res) => {
     res.status(404);
     if (req.accepts('html')) {

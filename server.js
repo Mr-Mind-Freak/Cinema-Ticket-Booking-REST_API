@@ -22,6 +22,7 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/', require('./routes/root'));
+app.use('/auth', require('./routes/auth'));
 app.use('/register',require('./routes/register'));
 app.all('*',(req, res) => {
     res.status(404);

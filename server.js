@@ -31,6 +31,7 @@ app.use('/logout',require('./routes/logout'));
 app.use('/forgot',require('./routes/forgot'));
 app.use(verifyJWT);
 app.use('/users',require('./routes/api/user'));
+app.use('/reviews',require('./routes/api/review'));
 app.all('*',(req, res) => {
     res.status(404);
     if (req.accepts('html')) {

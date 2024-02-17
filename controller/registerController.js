@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
+const path = require('path');
 const { setAccessToken, setRefreshToken } = require('./setTokens');
 
 const handleNewUser = async(req, res) => {
@@ -17,17 +19,22 @@ const handleNewUser = async(req, res) => {
     try {
         const hashpwd = await bcrypt.hash(password, 10);
         const user = await User.create({
-            "username":username,
-            "email":email,
-            "password": hashpwd,
-            "phoneno":phoneno,
-            "active":true
+            username:username,
+            profile : {
+                data : req.file.path,
+                contentType: 'image/jpg'
+            },
+            email:email,
+            password: hashpwd,
+            phoneno:phoneno,
+            active:true
         });
         const accessToken = setAccessToken(user);
         const refreshToken = await setRefreshToken(user);
         res.cookie('jwt',refreshToken,{ httpOnly: true, secure: true, sameSite: 'None', maxAge: 2 * 24 * 60 * 60 * 1000 });
         res.status(201).json({ accessToken, "username": user.username, "message":`Account ${username} is created successfully` });
     } catch (err) {
+        console.log(err.stack);
         res.status(500).json({"message": err.message});
     }
 }

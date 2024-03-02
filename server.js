@@ -29,9 +29,11 @@ app.use('/register',require('./routes/register'));
 app.use('/refresh',require('./routes/refresh'));
 app.use('/logout',require('./routes/logout'));
 app.use('/forgot',require('./routes/forgot'));
-app.use(verifyJWT);
+//app.use(verifyJWT);
 app.use('/users',require('./routes/api/user'));
 app.use('/reviews',require('./routes/api/review'));
+app.use('/movies',require('./routes/api/movie'));
+app.use('/person',require('./routes/api/person'));
 app.all('*',(req, res) => {
     res.status(404);
     if (req.accepts('html')) {

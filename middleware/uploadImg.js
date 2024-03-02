@@ -3,17 +3,57 @@ const fs = require('fs');
 const fsPromises = require('fs').promises;
 const path = require('path');
 
-const storageEngine = multer.diskStorage({
+const profileStorage = multer.diskStorage({
     destination: async (req, file, cb) => {
-        if(!fs.existsSync(path.join(__dirname,'..','data')))
-            await fsPromises.mkdir(path.join(__dirname,"..",'data'));
-        cb(null, path.join(__dirname,"..",'data'))
+        let filePath = path.join(__dirname,'..','data')
+        if(!fs.existsSync(filePath))
+            await fsPromises.mkdir(filePath);
+        cb(null, filePath)
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
     }
 });
 
-const upload = multer({storage: storageEngine});
+const personStorage = multer.diskStorage({
+    destination: async (req, file, cb) => {
+        let filePath = path.join(__dirname,'..','data','person')
+        if(!fs.existsSync(filePath))
+            await fsPromises.mkdir(filePath);
+        cb(null, filePath)
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+});
 
-module.exports = upload;
+const movieStorage = multer.diskStorage({
+    destination: async (req, file, cb) => {
+        let filePath = path.join(__dirname,'..','data','movies')
+        if(!fs.existsSync(filePath))
+            await fsPromises.mkdir(filePath);
+        cb(null, filePath)
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname+'-'+Date.now())
+    }
+});
+
+const animeStorage = multer.diskStorage({
+    destination: async (req, file, cb) => {
+        let filePath = path.join(__dirname,'..','data','anime')
+        if(!fs.existsSync(filePath))
+            await fsPromises.mkdir(filePath);
+        cb(null, filePath)
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname+'-'+Date.now())
+    }
+});
+
+const uploadProfile = multer({storage: profileStorage});
+const uploadPerson= multer({storage: personStorage});
+const uploadMovie= multer({storage: movieStorage});
+const uploadAnime= multer({storage: animeStorage});
+
+module.exports = { uploadProfile, uploadPerson, uploadMovie, uploadAnime };

@@ -35,6 +35,7 @@ app.use('/reviews',require('./routes/api/review'));
 app.use('/users',require('./routes/api/user'));
 app.use('/person',require('./routes/api/person'));
 app.use('/screens',require('./routes/api/screen'));
+app.use('/tickets',require('./routes/api/ticket'));
 app.all('*',(req, res) => {
     res.status(404);
     if (req.accepts('html')) {

@@ -1,9 +1,8 @@
 const Movies = require('../models/Movies');
-const Person = require('../models/Person');
 
 const getAllMovies = async(req, res) => {
     try{
-        const movies = await Movies.find({},'movieName posters hashTags ratings votes category');
+        const movies = await Movies.find({},'name posters hashTags ratings votes category');
         if(!movies.length) return res.sendStatus(204);
         res.status(200).json(movies);
     } catch (err) {
@@ -13,22 +12,22 @@ const getAllMovies = async(req, res) => {
 }
 
 const handleNewMovie = async(req, res) => {
-    const { movieName, dimention, duration, rated, about} = req.body;
+    const { name, dimention, duration, rated, about } = req.body;
     const votes = Number(req.body.votes);
     const languages = Array.from(req.body.languages.split(','));    // converting comma separated string into array
     const category= Array.from(req.body.category.split(','));
     const casts = Array.from(req.body.casts.split(','));
-    let { screening, releaseDate, from, to, ratings, hashTags } = req.body;
+    let { releaseDate, ratings, hashTags, isMovie, isAnime, screening } = req.body;
     if(!hashTags.includes('#')) hashTags = '#'+hashTags;
-    screening = (String(screening).toLowerCase() === 'true'); // converting type string to boolean 
+    if(isMovie) isMovie = (String(isMovie).toLowerCase() === 'true'); // converting type string to boolean 
+    if(isAnime) isAnime = (String(isAnime).toLowerCase() === 'true');
+    screening = (String(screening).toLowerCase() === 'true');
     releaseDate = new Date(releaseDate); // converting type string to date object
-    from = new Date(from);
-    to = new Date(to);
     ratings = Number(ratings);
-    if(!movieName || !ratings)
+    if(!name || !ratings)
         return res.status(400).json({ message : 'All fields are required'});
-    const duplicateMovie = await Movies.findOne({ movieName }).exec();
-    if(duplicateMovie) return res.status(409).json({ message : `${movieName} movie already exists in database`});
+    const duplicate = await Movies.findOne({ name }).exec();
+    if(duplicate) return res.status(409).json({ message : `${name} movie already exists in database`});
     try {
         let posters = []
         if(req.files){
@@ -39,7 +38,7 @@ const handleNewMovie = async(req, res) => {
                 });
             });
             const movie = await Movies.create({
-                movieName,
+                name,
                 hashTags,
                 ratings,
                 votes, 
@@ -50,15 +49,15 @@ const handleNewMovie = async(req, res) => {
                 rated,
                 casts,
                 about,
-                screening,
                 releaseDate,
                 posters,
-                from,
-                to
+                screening,
+                isMovie,
+                isAnime
             });
-            return res.status(201).json({ message : `Movie ${movie.movieName} successfully added into database`});
+            return res.status(201).json({ message : `Movie ${movie.name} successfully added into database`});
         }
-        res.status(400).json({ message : `posters for ${movieName} is required`});
+        res.status(400).json({ message : `posters for ${name} is required`});
     } catch (err) {
         console.log(err.stack);
         res.status(500).json({ message : err.message })
@@ -66,16 +65,28 @@ const handleNewMovie = async(req, res) => {
 }
 
 const updateMovie = async (req, res) => {
-    const { movieName } = req.body;
-    let { from, to } = req.body;
-    if(!movieName || !from || !to) return res.status(400).json({ message : 'Movie name, from date, to date are required to update'});
-    from = new Date(from);
-    to = new Date(to);
-    let movie = await Movies.findOne({ movieName });
+    const { name } = req.body;
+    let { ratings, votes, hashTags, screening } = req.body;
+    if(!name) return res.status(400).json({ message : 'Movie name is required to update'});
+    let movie = await Movies.findOne({ name });
     if(!movie) return res.sendStatus(204);
     try {
-        movie.from = from;
-        movie.to = to;
+        if(ratings){
+            ratings = Number(ratings);
+            movie.ratings = ratings;
+        }
+        if(votes){
+            votes = Number(votes);
+            movie.votes = votes;
+        }
+        if(hashTags){
+            if(!hashTags.includes('#')) hashTags = '#'+hashTags;
+            movie.hashTags = hashTags;
+        }
+        if(screening){
+            screening = (String(screening).toLowerCase() === 'true');
+            movie.screening = screening;
+        }
         const result = await movie.save();
         res.status(200).json({ message : 'Movie details successfully updated'});
     } catch (err) {
@@ -85,14 +96,14 @@ const updateMovie = async (req, res) => {
 }
 
 const deleteMovie = async(req, res) => {
-    const { movieName } = req.body;
-    if(!movieName) return res.status(400).json({ message : 'Movie name is required for delete operation'});
-    const movie = await Movies.findOne({ movieName });
+    const { name } = req.body;
+    if(!name) return res.status(400).json({ message : 'Movie name is required for delete operation'});
+    const movie = await Movies.findOne({ name });
     if(!movie) return res.sendStatus(204);
     try {
-        const result = await Movies.deleteOne({ movieName });
+        const result = await Movies.deleteOne({ name });
         if(result.acknowledged)
-            return res.status(200).json({message:`${moviename} successfully deleted`});
+            return res.status(200).json({message:`${name} successfully deleted`});
     } catch (err) {
         console.log(err.stack);
         res.status(500).json({"message":"server error"});
@@ -100,10 +111,10 @@ const deleteMovie = async(req, res) => {
 }
 
 const getSingleMovie = async(req, res) => {
-    const movieName = req.params.movieName;
-    if(!movieName) return res.status(400).json({ message : 'Name is required to access particular movie'});
+    const name = req.params.name;
+    if(!name) return res.status(400).json({ message : 'Name is required to access particular movie'});
     try{
-        const movie = await Movies.findOne({ movieName });
+        const movie = await Movies.findOne({ name });
         if(!movie) return res.sendStatus(204); 
         res.status(200).json(movie);
     } catch (err) {

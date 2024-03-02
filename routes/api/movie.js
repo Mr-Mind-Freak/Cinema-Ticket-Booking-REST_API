@@ -8,6 +8,6 @@ router.route('/')
     .patch(movieController.updateMovie)
     .delete(movieController.deleteMovie);
 
-router.route('/:movieName').get(movieController.getSingleMovie);
+router.route('/:name').get(movieController.getSingleMovie);
 
 module.exports = router;

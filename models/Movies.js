@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
-    movieName : {
+    name : {
         type : String,
         unique : true,
         required : true,
@@ -27,28 +27,34 @@ const movieSchema = new mongoose.Schema({
         get : n => Math.round(n),
         set : n => Math.round(n)
     },
-    dimention : { String },
+    dimention : { type : String },
     languages : [
         {
             type : String,
             default : 'Tamil'
         }
     ],
-    duration : { String },
+    duration : { type : String },
     releaseDate : { 
         type : Date,
         default : Date.now
     },
     category : [{ type : String }],
-    rated: { String },
+    rated: { type : String },
     casts : [{ type : String }],
-    about : { String },
-    screening : {
-        type: Boolean,
+    about : { type : String },
+    isMovie : {
+        type : Boolean,
         default : false
     },
-    from : { type : Date },
-    to : { type : Date }
+    isAnime : {
+        type : Boolean,
+        default: false
+    },
+    screening : {
+        type : Boolean,
+        default : false
+    }
 });
 
 module.exports = mongoose.model('movies',movieSchema);

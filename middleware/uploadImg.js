@@ -35,7 +35,7 @@ const movieStorage = multer.diskStorage({
         cb(null, filePath)
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname+'-'+Date.now())
+        cb(null, file.originalname)
     }
 });
 
@@ -47,7 +47,7 @@ const animeStorage = multer.diskStorage({
         cb(null, filePath)
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname+'-'+Date.now())
+        cb(null, file.originalname)
     }
 });
 

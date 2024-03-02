@@ -4,7 +4,8 @@ const movieSchema = new mongoose.Schema({
     movieName : {
         type : String,
         unique : true,
-        required : true
+        required : true,
+        set : name => name.toUpperCase()
     },
     posters : [
         {
@@ -26,7 +27,7 @@ const movieSchema = new mongoose.Schema({
         get : n => Math.round(n),
         set : n => Math.round(n)
     },
-    dimentions : { String },
+    dimention : { String },
     languages : [
         {
             type : String,
@@ -38,10 +39,16 @@ const movieSchema = new mongoose.Schema({
         type : Date,
         default : Date.now
     },
-    category : [{ String }],
+    category : [{ type : String }],
     rated: { String },
-    casts : [{ String }],
-    about : { String }
+    casts : [{ type : String }],
+    about : { String },
+    screening : {
+        type: Boolean,
+        default : false
+    },
+    from : { type : Date },
+    to : { type : Date }
 });
 
 module.exports = mongoose.model('movies',movieSchema);

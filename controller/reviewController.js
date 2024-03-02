@@ -1,5 +1,6 @@
 const Reviews = require('../models/Review');
 const Users = require('../models/User');
+const Ticket = require('../models/Ticket');
 
 const getReviews = async (req, res) => {
     const { movie_name } = req.body;
@@ -13,7 +14,6 @@ const getReviews = async (req, res) => {
 
 const uploadReview = async (req, res) => {
     const username = req.username;
-    // check whether the user has booked tickets for this movie or not
     if(!username)
         return res.status(403).json({"message":"Please log in..."});
     const user = await Users.findOne({ username });
@@ -23,6 +23,8 @@ const uploadReview = async (req, res) => {
         return res.status(400).json({"message":"Movie name is required"});
     if(!ratings)
         return res.status(400).json({"message":"Please give your ratings"});
+    const ticket = await Ticket.findOne({ movieName : movie_name, userName : username });
+    if(!ticket) return res.status(409).json({message : `${username} haven't watched the movie yet`});
     let duplicateReview = await Reviews.findOne({ username, movie_name });
     if(duplicateReview){ 
         return res.status(409).json({

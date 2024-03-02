@@ -21,7 +21,8 @@ const getAllTickets = async(req, res) => {
 }
 
 const bookTicket = async(req, res) => {
-    const { screenName, screenNo, show, userName, time, movieName, cost, seatNo, no_of_tickets} = req.body;
+    const { screenName, screenNo, show, time, movieName, cost, seatNo, no_of_tickets} = req.body;
+    let userName = req.username;
     let { date } = req.body;
     if(!screenName || !userName || !show || !screenNo || !movieName || !cost || !seatNo || !time)
         return res.status(400).json({ message : 'All fields are required'});

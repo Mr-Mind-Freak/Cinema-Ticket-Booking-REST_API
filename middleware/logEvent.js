@@ -16,7 +16,7 @@ const logger = async(data,file) =>{
 
 const logEvent = (req, res, next) => {
     let msg = `${req.method}\t${req.headers.origin}\t${req.url}`;
-    const data = `${format(new Date,'yyyyMMdd\tHH:mm:ss')} ${msg}`;
+    const data = `${format(new Date,'yyyyMMdd\tHH:mm:ss')} ${msg} \n`;
     logger(data,'log.txt');
     next();
 }

@@ -11,8 +11,7 @@ const handleNewUser = async(req, res) => {
 
     let duplicateUser = await User.findOne({ username }).exec();
     let duplicateMail = await User.findOne({ email }).exec();
-    if(duplicateUser)
-        return res.status(409).json({ "message": "User name already exists in the database"});
+    if(duplicateUser)        return res.status(409).json({ "message": "User name already exists in the database"});
     if(duplicateMail)
         return res.status(409).json({"message":"This email already exists in our database"});
     

@@ -6,7 +6,7 @@ const changePassword = async (req, res) => {
         const { username, email, newPassword } = req.body;
         if(!username || !newPassword || !email) return res.status(400).json({"message":"All fields are required"});
         const user = await User.findOne({ username }).exec();
-        if(!user) return res.status(204).json({"message":`No account found as ${username}`});
+        if(!user) return res.sendStatus(204);
         const match = user.email === email ? true : false;
         if(match){
             const hashedNewPass = await bcrypt.hash(newPassword, 10);

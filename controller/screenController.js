@@ -19,7 +19,6 @@ const setupScreen= async(req, res) => {
         from = new Date(from);
     if(to)
         to = new Date(to);
-    console.log(bookedSeats);
     try {
         const screen = await Screen.create({
             screenNo,

@@ -7,6 +7,8 @@ const corsOptions = {
         else
             console.log(new Error('Not allowed by cors'));
     },
+    methods: ['GET','POST','PATCH','DELETE'],
+    credentials: true,
     optionsSuccessStatus : 200
 };
 

@@ -5,7 +5,7 @@ const { setAccessToken } = require('./setTokens');
 const handleRefreshToken = async(req,res) => {
     const refreshToken = req.cookies['jwt'] || null;
     if(!refreshToken)
-        return res.status(401).json({"message":"Access denied. no refresh token provided"});
+        return res.sendStatus(204);
     
     try {
         const foundUser = await User.findOne({ refreshToken }).exec();
@@ -19,7 +19,7 @@ const handleRefreshToken = async(req,res) => {
                 if(err || foundUser.username !== decoded.username)
                     return res.status(403).json({"message":"Please Log in"});
                 const accessToken = setAccessToken(decoded);
-                res.status(200).json({ accessToken, "username":decoded.username });
+                res.status(200).json({ accessToken, "username":decoded.username, 'profile': decoded.profile });
             }
         );    
     } catch (error) {

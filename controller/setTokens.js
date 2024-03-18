@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const setAccessToken = (user) => {
     const payload = {
         username: user.username,
-        password: user.password
+        profile: user.profile
     }
     const secret = process.env.ACCESS_TOKEN;
     const options = { expiresIn: '1h' };
@@ -14,7 +14,7 @@ const setAccessToken = (user) => {
 const setRefreshToken = async(user) => {
     const payload = {
         username: user.username,
-        password: user.password
+        profile: user.profile
     }
     const secret = process.env.REFRESH_TOKEN;
     const options = { expiresIn: '1d' };

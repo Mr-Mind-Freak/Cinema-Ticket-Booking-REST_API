@@ -11,7 +11,7 @@ const handleNewUser = async(req, res) => {
 
     let duplicateUser = await User.findOne({ username }).exec();
     let duplicateMail = await User.findOne({ email }).exec();
-    if(duplicateUser)        return res.status(409).json({ "message": "User name already exists in the database"});
+    if(duplicateUser)return res.status(409).json({ "message": "User name already exists in the database"});
     if(duplicateMail)
         return res.status(409).json({"message":"This email already exists in our database"});
     
@@ -30,8 +30,16 @@ const handleNewUser = async(req, res) => {
         });
         const accessToken = setAccessToken(user);
         const refreshToken = await setRefreshToken(user);
-        res.cookie('jwt',refreshToken,{ httpOnly: true, secure: true, sameSite: 'None', maxAge: 2 * 24 * 60 * 60 * 1000 });
-        res.status(201).json({ accessToken, "username": user.username, "message":`Account ${username} is created successfully` });
+        const responseResult = {
+            username : user.username,
+            profile : user.profile,
+            message : `Account ${username} is created successfully`,
+            accessToken
+        }
+        res
+            .status(202)
+            .cookie('jwt',"Bearer "+refreshToken)
+            .json(responseResult);
     } catch (err) {
         console.log(err.stack);
         res.status(500).json({"message": err.message});

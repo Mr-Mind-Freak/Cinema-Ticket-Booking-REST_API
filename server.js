@@ -15,7 +15,6 @@ const verifyJWT = require('./middleware/verifyJWT');
 const app = express();
 const PORT = process.env.PORT || 3500;
 databaseCon();
-
 app.use(logEvent);
 app.use(credentials);
 app.use(cors(corsOptions));

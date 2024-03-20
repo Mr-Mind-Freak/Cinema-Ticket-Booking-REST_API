@@ -21,7 +21,7 @@ const handleNewUser = async(req, res) => {
             username:username,
             profile : {
                 data : req.file.path,
-                contentType: 'image/jpg'
+                contentType: req.file.mimetype
             },
             email:email,
             password: hashpwd,
@@ -38,7 +38,7 @@ const handleNewUser = async(req, res) => {
         }
         res
             .status(202)
-            .cookie('jwt',"Bearer "+refreshToken)
+            .cookie('jwt',refreshToken)
             .json(responseResult);
     } catch (err) {
         console.log(err.stack);

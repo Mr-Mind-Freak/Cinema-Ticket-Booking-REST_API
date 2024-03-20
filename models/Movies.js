@@ -5,7 +5,7 @@ const movieSchema = new mongoose.Schema({
         type : String,
         unique : true,
         required : true,
-        set : name => name.LowerCase()
+        set : name => name.toLowerCase()
     },
     posters : [
         {

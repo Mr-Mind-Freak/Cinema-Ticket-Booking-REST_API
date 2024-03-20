@@ -12,7 +12,8 @@ const getAllMovies = async(req, res) => {
 }
 
 const handleNewMovie = async(req, res) => {
-    const { name, dimention, duration, rated, about } = req.body;
+    const { dimention, duration, rated, about } = req.body;
+    let name = req.body.name;
     const votes = Number(req.body.votes);
     const languages = Array.from(req.body.languages.split(','));    // converting comma separated string into array
     const category= Array.from(req.body.category.split(','));
@@ -30,10 +31,10 @@ const handleNewMovie = async(req, res) => {
     const duplicate = await Movies.findOne({ name }).exec();
     if(duplicate) return res.status(409).json({ message : `${name} movie already exists in database`});
     try {
-        let posters = []
+        let posters = [];
         if(req.files){
             req.files.forEach (file => {
-                posters.push(`http://localhost:3500/data/movies/${req.file.originalname}`);
+                posters.push(`http://localhost:3500/data/movies/${file.originalname}`);
             });
             const movie = await Movies.create({
                 name,

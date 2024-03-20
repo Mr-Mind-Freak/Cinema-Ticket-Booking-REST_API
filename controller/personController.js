@@ -22,10 +22,7 @@ const handleNewPerson = async(req, res) => {
     try {
         const person = await Person.create({
             name,
-            image : {
-                data : req.file.path,
-                contentType : 'image/jpg'
-            },
+            image : `http://localhost/person/${req.file.originalname}`,
             occupation,
             dob : new Date(dob),
             birthPlace,

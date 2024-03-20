@@ -26,16 +26,14 @@ const handleNewMovie = async(req, res) => {
     ratings = Number(ratings);
     if(!name || !ratings)
         return res.status(400).json({ message : 'All fields are required'});
+    name = name.toLowerCase();
     const duplicate = await Movies.findOne({ name }).exec();
     if(duplicate) return res.status(409).json({ message : `${name} movie already exists in database`});
     try {
         let posters = []
         if(req.files){
             req.files.forEach (file => {
-                posters.push({
-                    data : file.path,
-                    contentType : 'image/jpg'
-                });
+                posters.push(`http://localhost:3500/data/movies/${req.file.originalname}`);
             });
             const movie = await Movies.create({
                 name,

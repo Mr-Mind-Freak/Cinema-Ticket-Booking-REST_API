@@ -5,12 +5,11 @@ const movieSchema = new mongoose.Schema({
         type : String,
         unique : true,
         required : true,
-        set : name => name.toUpperCase()
+        set : name => name.LowerCase()
     },
     posters : [
         {
-            data : Buffer,
-            contentType : String
+            type: String
         }
     ],
     hashTags :{

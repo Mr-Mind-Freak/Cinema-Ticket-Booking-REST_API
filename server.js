@@ -26,6 +26,7 @@ app.use('/', require('./routes/root'));
 app.use('/auth', require('./routes/auth'));
 app.use('/register',require('./routes/register'));
 app.use('/refresh',require('./routes/refresh'));
+app.use('/data', express.static('data'));
 app.use('/logout',require('./routes/logout'));
 app.use('/forgot',require('./routes/forgot'));
 app.use('/movies',require('./routes/api/movie'));

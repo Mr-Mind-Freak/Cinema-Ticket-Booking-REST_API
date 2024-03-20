@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     profile : {
-        data : Buffer,
-        contentType: String
+        type : String,
+        required: true
     },
     email : {
         type:String,

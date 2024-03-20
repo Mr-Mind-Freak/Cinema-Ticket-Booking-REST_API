@@ -7,8 +7,8 @@ const personSchema = new mongoose.Schema({
         unique: true
     },
     image : {
-        data : Buffer,
-        contentType : String,
+        type: String,
+        required: true
     },
     occupation : {
         type : String,

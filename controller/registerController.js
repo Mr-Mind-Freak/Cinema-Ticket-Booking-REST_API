@@ -17,12 +17,10 @@ const handleNewUser = async(req, res) => {
     
     try {
         const hashpwd = await bcrypt.hash(password, 10);
+        console.log(req.file.path);
         const user = await User.create({
             username:username,
-            profile : {
-                data : req.file.path,
-                contentType: req.file.mimetype
-            },
+            profile : `http://localhost:3500/data/${req.file.originalname}`,
             email:email,
             password: hashpwd,
             phoneno:phoneno,

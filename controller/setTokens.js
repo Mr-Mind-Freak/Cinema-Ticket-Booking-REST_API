@@ -6,7 +6,7 @@ const setAccessToken = (user) => {
         profile: user.profile
     }
     const secret = process.env.ACCESS_TOKEN;
-    const options = { expiresIn: '1h' };
+    const options = { expiresIn: '4h' };
     const access_token = jwt.sign(payload,secret,options);
     return access_token;
 }

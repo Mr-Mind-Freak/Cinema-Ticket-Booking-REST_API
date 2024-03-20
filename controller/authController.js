@@ -22,7 +22,7 @@ const handleLogin = async(req,res) => {
     res
         .status(202)
         .cookie('jwt',"Bearer "+refreshToken)
-        .json({ accessToken, "username": foundUser.username });
+        .json({ accessToken, "username": foundUser.username, "profile" : foundUser.profile  });
 }
 
 module.exports= { handleLogin };

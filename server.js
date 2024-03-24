@@ -33,7 +33,6 @@ app.use('/movies',require('./routes/api/movie'));
 app.use(verifyJWT);
 app.use('/reviews',require('./routes/api/review'));
 app.use('/users',require('./routes/api/user'));
-app.use('/person',require('./routes/api/person'));
 app.use('/screens',require('./routes/api/screen'));
 app.use('/tickets',require('./routes/api/ticket'));
 app.all('*',(req, res) => {

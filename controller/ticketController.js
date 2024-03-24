@@ -21,18 +21,18 @@ const getAllTickets = async(req, res) => {
 }
 
 const bookTicket = async(req, res) => {
-    const { screenName, screenNo, show, time, movieName, cost, seatNo, no_of_tickets} = req.body;
+    const { screenName, screenNo, show, movieName, cost, seatNo, no_of_tickets} = req.body;
     let userName = req.username;
     let { date } = req.body;
-    if(!screenName || !userName || !show || !screenNo || !movieName || !cost || !seatNo || !time)
+    if(!screenName || !userName || !show || !screenNo || !movieName || !cost || !seatNo)
         return res.status(400).json({ message : 'All fields are required'});
-    const movie = await Screen.findOne({ screenName, show, movieName });
+    const movie = await Screen.findOne({ screenName, movieName });
     if(!movie) return res.status(409).json({ messaage : "Invalid show time"});
     if(date) date = new Date(date);
     const ticketNo = await randomNumber();
     try {
         const ticket = await Ticket.create({
-            ticketNo, screenName, screenNo, show, userName, time, movieName, cost, seatNo, no_of_tickets, date
+            ticketNo, screenName, screenNo, show, userName, movieName, cost, seatNo, no_of_tickets, date
         });
         res.status(201).json(ticket);
     } catch (err) {

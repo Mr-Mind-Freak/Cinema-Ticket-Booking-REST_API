@@ -7,11 +7,12 @@ const movieSchema = new mongoose.Schema({
         required : true,
         set : name => name.toLowerCase()
     },
-    posters : [
-        {
-            type: String
-        }
-    ],
+    poster : {
+        type: String
+    },
+    images : [{
+        type : String
+    }],
     hashTags :{
         type : String,
         default : '#latest movies'
@@ -27,29 +28,37 @@ const movieSchema = new mongoose.Schema({
         set : n => Math.round(n)
     },
     dimention : { type : String },
-    languages : [
-        {
+    language : {
             type : String,
             default : 'Tamil'
-        }
-    ],
+    },
     duration : { type : String },
-    releaseDate : { 
-        type : Date,
-        default : Date.now
+    category : { type : String },
+    actor : {
+        name : { type : String},
+        pic : { type : String },
     },
-    category : [{ type : String }],
-    rated: { type : String },
-    casts : [{ type : String }],
+    actress : {
+        name : { type : String},
+        pic : { type : String },
+    },
+    director : {
+        name : { type : String},
+        pic : { type : String },
+    },
+    music : {
+        name : { type : String},
+        pic : { type : String },
+    },
+    cinematography : {
+        name : { type : String},
+        pic : { type : String },
+    },
+    story : {
+        name : { type : String},
+        pic : { type : String },
+    },
     about : { type : String },
-    isMovie : {
-        type : Boolean,
-        default : false
-    },
-    isAnime : {
-        type : Boolean,
-        default: false
-    },
     screening : {
         type : Boolean,
         default : false

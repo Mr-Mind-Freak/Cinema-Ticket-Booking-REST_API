@@ -15,18 +15,6 @@ const profileStorage = multer.diskStorage({
     }
 });
 
-const personStorage = multer.diskStorage({
-    destination: async (req, file, cb) => {
-        let filePath = path.join(__dirname,'..','data','person')
-        if(!fs.existsSync(filePath))
-            await fsPromises.mkdir(filePath);
-        cb(null, filePath)
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname)
-    }
-});
-
 const movieStorage = multer.diskStorage({
     destination: async (req, file, cb) => {
         let filePath = path.join(__dirname,'..','data','movies')
@@ -40,7 +28,6 @@ const movieStorage = multer.diskStorage({
 });
 
 const uploadProfile = multer({storage: profileStorage});
-const uploadPerson= multer({storage: personStorage});
 const uploadMovie= multer({storage: movieStorage});
 
-module.exports = { uploadProfile, uploadPerson, uploadMovie };
+module.exports = { uploadProfile, uploadMovie };

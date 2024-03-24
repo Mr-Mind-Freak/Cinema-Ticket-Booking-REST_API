@@ -15,13 +15,12 @@ const ticketSchema = new mongoose.Schema({
         required : true
     },
     show : {
-        type : Number
+        type : String
     },
     date : {
         type : Date,
         default : Date.now()
     },
-    time : { type : String },
     screenNo : {
         type : Number,
         required : true

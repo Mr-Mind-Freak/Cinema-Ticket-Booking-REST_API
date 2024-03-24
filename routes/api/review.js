@@ -4,7 +4,6 @@ const reviewController = require('../../controller/reviewController');
 router.route('/')
     .get(reviewController.getReviews)
     .post(reviewController.uploadReview)
-    .patch(reviewController.updateReview)
     .delete(reviewController.deleteReview);
 
 router.route('/:username')

@@ -21,7 +21,7 @@ const handleLogin = async(req,res) => {
     const refreshToken = await setRefreshToken(foundUser);
     res
         .status(202)
-        .cookie('jwt',refreshToken)
+        .cookie('jwt',refreshToken,{ expires: new Date(Date.now() + 10 * 86400000) })
         .json({ accessToken, "username": foundUser.username, "profile" : foundUser.profile  });
 }
 

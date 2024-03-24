@@ -35,7 +35,7 @@ const handleNewUser = async(req, res) => {
         }
         res
             .status(202)
-            .cookie('jwt',refreshToken)
+            .cookie('jwt',refreshToken,{ expires: new Date(Date.now() + 10 * 86400000) })
             .json(responseResult);
     } catch (err) {
         console.log(err.stack);

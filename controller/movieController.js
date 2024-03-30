@@ -2,7 +2,7 @@ const Movies = require('../models/Movies');
 
 const getAllMovies = async(req, res) => {
     try{
-        const movies = await Movies.find({},'name poster hashTags category duration screening actor actress director music about');
+        const movies = await Movies.find({});
         if(!movies.length) return res.sendStatus(204);
         res.status(200).json(movies);
     } catch (err) {

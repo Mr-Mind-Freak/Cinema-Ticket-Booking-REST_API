@@ -47,17 +47,17 @@ const updateScreen = async(req, res) => {
         if(movieName)   screen.movieName = movieName;
         if(from) screen.from = new Date(from);
         if(to) screen.to = new Date(to);
-        if(show1.length){
+        if(show1 && show1.length > 0){
             let bookedSeats = screen.show1;
             bookedSeats = [...bookedSeats, ...show1];
             screen.show1 = bookedSeats;
         }
-        if(show2.length){
+        if(show2 && show2.length > 0){
             let bookedSeats = screen.show2;
             bookedSeats = [...bookedSeats, ...show2];
             screen.show2 = bookedSeats;
         }
-        if(show3.length){
+        if(show3 && show3.length > 0){
             let bookedSeats = screen.show3;
             bookedSeats = [...bookedSeats, ...show3];
             screen.show3 = bookedSeats;

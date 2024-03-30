@@ -3,10 +3,7 @@ const Users = require('../models/User');
 const Ticket = require('../models/Ticket');
 
 const getReviews = async (req, res) => {
-    const { movie_name } = req.body;
-    if(!movie_name)
-        return res.status(400).json({"message":"Movie name is required"});
-    const reviews = await Reviews.find({ movie_name });
+    const reviews = await Reviews.find({});
     if(reviews.length <= 0)
         return res.sendStatus(204);
     res.status(200).json(reviews);
